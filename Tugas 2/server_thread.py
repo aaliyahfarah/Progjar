@@ -4,6 +4,7 @@ import threading
 import logging
 import time
 import sys
+from datetime import datetime
 
 class ProcessTheClient(threading.Thread):
 	def __init__(self,connection,address):
@@ -13,12 +14,14 @@ class ProcessTheClient(threading.Thread):
 
 	def run(self):
 		while True:
-			data = self.connection.recv(32)
-			if data:
-				self.connection.sendall(data)
+			data = self.connection.recv(1024).decode('UTF-8')
+			if data.startswith('TIME') and data.endswith('\r\n'):
+				current_time = datetime.now().strftime('%H:%M:%S')
+				response = 'JAM '  + current_time + '\r\n'
+				self.connection.sendall(response.encode('UTF-8'))
 			else:
 				break
-		self.connection.close()
+			self.connection.close()
 
 class Server(threading.Thread):
 	def __init__(self):
@@ -27,8 +30,9 @@ class Server(threading.Thread):
 		threading.Thread.__init__(self)
 
 	def run(self):
-		self.my_socket.bind(('0.0.0.0',8889))
+		self.my_socket.bind(('0.0.0.0',45000))
 		self.my_socket.listen(1)
+		logging.warning(f"waiting connection ....")
 		while True:
 			self.connection, self.client_address = self.my_socket.accept()
 			logging.warning(f"connection from {self.client_address}")
