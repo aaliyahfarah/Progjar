@@ -8,10 +8,10 @@ try:
     # Create a TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(10)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 10)
 
     # Bind the socket to the port
-    server_address = ('0.0.0.0', 10000) #--> gunakan 0.0.0.0 agar binding ke seluruh ip yang tersedia
+    server_address = ('0.0.0.0', 32444) #--> gunakan 0.0.0.0 agar binding ke seluruh ip yang tersedia
 
     logging.info(f"starting up on {server_address}")
     sock.bind(server_address)
@@ -36,7 +36,7 @@ try:
             else:
                 #print >>sys.stderr, 'no more data from', client_address
                 #print(f"no more data from {client_address}")
-               break
+                break
         # Clean up the connection
         connection.close()
 except Exception as ee:
