@@ -30,6 +30,6 @@ def get_remote_info():
 
 
 if __name__=='__main__':
-#    get_my_info()
-#    get_remote_info()
+    get_my_info()
+    get_remote_info()
     get_my_socket()
