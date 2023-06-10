@@ -5,7 +5,7 @@ from socket import *
 from concurrent.futures import ThreadPoolExecutor
 
 def main():
-    nama='client_thread'
+    nama='client_threadpool'
     logging.warning(f"nama {nama}")    
     
     server_host = '172.16.16.103'
